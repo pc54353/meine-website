@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Schöne Login Seite</title>
+<!-- Google Sign-In API -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  /* Gesamtes Body-Layout anpassen, um Scrollen zu ermöglichen */
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+    min-height: 100vh; /* Höhe anpassen, damit Inhalte mehr Platz haben */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* oben starten, damit bei viel Inhalt gescrollt werden kann */
+    overflow-y: auto; /* aktivieren vertikales Scrollen */
+    scroll-behavior: smooth; /* sanfter Scroll bei Bedarf */
+  }
+
+  /* Overlay für den Einstiegseffekt */
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    animation: fadeOutOverlay 1s ease-in-out forwards;
+  }
+
+  @keyframes fadeOutOverlay {
+    0% { opacity: 1; }
+    100% { opacity: 0; pointer-events: none; }
+  }
+
+  /* Login/Registrierungsfenster */
+  #loginContainer {
+    background-color: #000;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    width: 300px;
+    max-width: 90%;
+    text-align: center;
+    transform: scale(0);
+    opacity: 0;
+    animation: popIn 1s forwards;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  h2 {
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  /* Google Sign-In Button */
+  #g_id_onload {
+    margin-top: 20px;
+  }
+
+  /* Nach dem Login, Seite sichtbar machen */
+  #mainContent {
+    display: none;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+    color: #fff;
+    text-align: left;
+    max-width: 800px; /* Optional: Begrenze die Breite für besseren Lesefluss */
+    padding: 20px;
+  }
+
+  @keyframes fadeIn {
+    to { display: block; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Overlay für Animation -->
+<div id="overlay"></div>
+
+<!-- Login/Registrierfenster -->
+<div id="loginContainer">
+  <h2>Willkommen</h2>
+  <form id="authForm">
+    <input type="text" id="username" placeholder="Benutzername" required />
+    <input type="password" id="password" placeholder="Passwort" required />
+    <button type="submit" id="loginBtn">Login</button>
+    <button type="button" id="registerBtn">Registrieren</button>
+  </form>
+  <div id="g_id_onload"></div>
+  <div id="gSignInWrapper" style="margin-top:20px;">
+    <div id="g_id_signin"></div>
+  </div>
+</div>
+
+<!-- Hauptseite nach Login -->
+<div id="mainContent">
+ <h1>Willkommen auf meiner Webseite!</h1> <br>
+  <br>
+  <br>
+  <h2>Über mich:</h2>
+  <h2>-Ich bin Anonym</h2>
+  <h2>-Ich bin eine privat Person</h2> 
+  <h2>-Ich bin neu</h2> 
+  <h2>-Ich bin ein Neuling</h2> 
+  <br>
+  <h2>Über Website:</h2> 
+  <h2>Die Website dient zu Testzwecken.</h2> <br>
+  <h2>Thema: KI</h2> <br>
+  <br>
+  <h2>Gerne! Hier ist eine ausführliche Übersicht über das Thema **Künstliche Intelligenz (KI)**: <br> <br>
+
+---
+
+# Künstliche Intelligenz (KI) <br>
+
+## Was ist Künstliche Intelligenz? <br>
+
+Künstliche Intelligenz (KI) bezeichnet die Fähigkeit von Maschinen oder Computerprogrammen, menschenähnliche Intelligenzleistungen zu erbringen. Das umfasst das Lernen, Verstehen, Problemlösen, Entscheiden, Sprachverstehen, Bilderkennung und sogar Kreativität. Ziel ist es, Maschinen zu entwickeln, die Aufgaben selbstständig und intelligent ausführen können.
+<br>
+---
+
+## Geschichte der KI <br>
+<br>
+- **1950er Jahre**: Die Anfänge der KI mit Pionieren wie Alan Turing, der die Frage stellte: "Können Maschinen denken?" und den Turing-Test.
+- **1956**: Der Begriff "Künstliche Intelligenz" wurde auf der Dartmouth-Konferenz geprägt.
+- **1960-70er Jahre**: Erste Expertensysteme und einfache Programme, z.B. Schachcomputer.
+- **1980er Jahre**: Aufstieg der Wissensbasen und Expertensysteme.
+- **2000er Jahre**: Durchbruch des maschinellen Lernens dank großer Datenmengen und leistungsfähiger Hardware.
+- **Heute**: Fortschritte durch Deep Learning, neuronale Netze und Big Data.
+<br>
+---
+
+## Arten der Künstlichen Intelligenz
+<br>
+1. **Schwache KI (Narrow AI)**  
+   - Spezialisiert auf einzelne Aufgaben (z.B. Sprachassistenten, Bilderkennung, Empfehlungsdienste).  
+   - Kein echtes Bewusstsein oder Verständnis.
+<br>
+2. **Starke KI (Artificial General Intelligence, AGI)**  
+   - Hypothetische Form der KI, die menschenähnliche kognitive Fähigkeiten besitzt.  
+   - Kann jede intellektuelle Aufgabe eines Menschen ausführen.  
+   - Noch nicht erreicht.
+<br>
+3. **Superintelligente KI**  
+   - Übertrifft menschliche Intelligenz in allen Bereichen.  
+   - Theoretisch und Gegenstand vieler Diskussionen.
+<br>
+---
+<br>
+## Technologien und Methoden in der KI
+<br>
+- **Maschinelles Lernen (ML)**  
+  - Algorithmen, die aus Daten lernen und Muster erkennen.  
+  - Unterkategorien: Überwachtes Lernen, Unüberwachtes Lernen, Bestärkendes Lernen.
+<br>
+- **Deep Learning**  
+  - Nutzung tiefer neuronaler Netze mit vielen Schichten.  
+  - Besonders effektiv bei Bild- und Spracherkennung.
+<br>
+- **Neuronale Netze**  
+  - Nachbildung der Funktionsweise des menschlichen Gehirns.  
+  - Grundlage für Deep Learning.
+<br>
+- **Natürliche Sprachverarbeitung (NLP)**  
+  - Maschinen verstehen, interpretieren und generieren menschliche Sprache.  
+  - Anwendungen: Chatbots, Übersetzungsdienste.
+<br>
+- **Computer Vision**  
+  - Maschinen erkennen und interpretieren Bilder und Videos.
+<br>
+- **Robotik**  
+  - Einsatz von KI in physischen Robotern, z.B. autonome Fahrzeuge, Industrieroboter.
+<br>
+---
+<br>
+## Anwendungsbereiche der KI
+<br>
+- **Medizin**  
+  - Diagnoseunterstützung, personalisierte Medizin, Robotergestützte Chirurgie.
+<br>
+- **Automobilindustrie**  
+  - Autonomes Fahren, Fahrerassistenzsysteme.
+<br>
+- **Finanzen**  
+  - Algorithmischer Handel, Betrugserkennung.
+<br>
+- **Kundenservice**  
+  - Chatbots, virtuelle Assistenten.
+<br>
+- **E-Commerce**  
+  - Personalisierte Empfehlungen, Lagerverwaltung.
+<br>
+- **Unterhaltung**  
+  - Empfehlungssysteme bei Netflix, Spotify.
+<br>
+- **Sicherheit**  
+  - Überwachungssysteme, Gesichtserkennung.
+<br>
+---
+<br>
+## Chancen und Vorteile der KI
+<br>
+- Automatisierung repetitiver Aufgaben
+- Effizienzsteigerung
+- Neue Geschäftsmodelle
+- Verbesserung der medizinischen Versorgung
+- Unterstützung bei komplexen Analysen
+- Erschließung neuer Erkenntnisse in Wissenschaft und Forschung
+<br>
+---
+<br>
+## Herausforderungen und Risiken
+<br>
+- **Arbeitsplatzverlust** durch Automatisierung
+- **Bias (Voreingenommenheit)** in Daten und Algorithmen
+- **Datenschutz** und **Sicherheitsrisiken**
+- **Mangelndes Verständnis** für komplexe KI-Modelle
+- **Ethische Fragen**: Kontrolle, Verantwortung, Entscheidungsfindung
+- **Superintelligenz-Alarm**: Szenarien, in denen KI die Kontrolle übernimmt
+<br>
+---
+<br>
+## Zukünftige Entwicklungen
+<br>
+- Fortschritte in **erklärbarer KI (Explainable AI)**, um Entscheidungen nachvollziehbar zu machen
+- Entwicklung von **AGI** (Artificial General Intelligence)
+- Einsatz in **Smart Cities**, **Umweltschutz** und **Bildung**
+- Regulierung und **ethische Leitlinien** für den sicheren Einsatz
+<br>
+---
+<br>
+## Fazit
+<br>
+Künstliche Intelligenz ist eine revolutionäre Technologie, die vielfältige Möglichkeiten bietet, unser Leben zu verbessern. Gleichzeitig bringt sie bedeutende ethische, soziale und technische Herausforderungen mit sich. Ein verantwortungsvoller Umgang und die Entwicklung klarer Regulierungen sind entscheidend, um die Vorteile optimal zu nutzen und Risiken zu minimieren.
+<br>
+---
+<br>
+Wenn du möchtest, kann ich dir noch detailliertere Infos zu einzelnen Themen, aktuelle Forschungsstände oder praktische Anwendungsbeispiele geben!</h2>
+</div>
+
+<script>
+  // Beispiel-Client-ID, ersetze sie durch deine eigene
+  const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
+
+  // Funktion, um das Login-Fenster zu schließen und die Hauptseite zu zeigen
+  function showMainContent() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('loginContainer').style.display = 'none';
+    const main = document.getElementById('mainContent');
+    main.style.display = 'block';
+    main.style.animation = 'fadeIn 1s forwards';
+  }
+
+  // Google Sign-In initialisieren
+  window.onload = () => {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleSignIn,
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("g_id_signin"),
+      { theme: "outline", size: "large", text: "signin_with", shape: "rect" }
+    );
+  };
+
+  // Google Login
+  function handleGoogleSignIn(response) {
+    console.log('Google Response:', response);
+    showMainContent();
+  }
+
+  // Formular-Login
+  document.getElementById('authForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    alert('Login mit Benutzer: ' + username);
+    showMainContent();
+  });
+
+  document.getElementById('registerBtn').addEventListener('click', () => {
+    alert('Registrierungsfunktion noch nicht implementiert.');
+  });
+</script>
+</body>
+</html>
