@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiefen der Psychologie</title>
+    
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- HIER WURDE IHRE CLIENT-ID EINGEFÜGT -->
+    <meta name="google-signin-client_id" content="186192505823-llnp2aqpekb229c63g7kvib5j0fakbsr.apps.googleusercontent.com">
+
+    <style>
+        /* Grundlegende Stile und Schriftarten */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #ffffff;
+            --background-color: #000000;
+            --accent-color: #007bff;
+            --surface-color: rgba(20, 20, 20, 0.85);
+            --border-radius: 10px;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            font-family: 'Roboto', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Sternenhimmel-Animation */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--background-color);
+        }
+
+        /* Login-Overlay und Fenster */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #login-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #login-window {
+            background: var(--surface-color);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #login-overlay.hidden #login-window {
+            transform: scale(0.7);
+        }
+        
+        #login-window h2 {
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .form-container {
+            display: none;
+        }
+        .form-container.active {
+            display: block;
+        }
+
+        /* Formular-Elemente */
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-size: 1em;
+            outline: none;
+        }
+        
+        .input-field:focus + .input-label,
+        .input-field:valid + .input-label {
+            top: -20px;
+            font-size: 0.8em;
+            color: var(--accent-color);
+        }
+
+        .input-label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+            transition: 0.3s ease all;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            background: var(--accent-color);
+            color: white;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Google Anmelde-Button */
+        #google-signin-button {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .toggle-form {
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .toggle-form a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Hauptinhalt der Seite */
+        #main-content {
+            height: 100vh;
+            overflow-y: auto;
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        #main-content h1 {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .psychology-section {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.5);
+            border-left: 3px solid var(--accent-color);
+            border-radius: var(--border-radius);
+        }
+
+        .psychology-section h2 {
+            font-size: 1.8em;
+            color: var(--accent-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Animierter Sternenhimmel-Hintergrund -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Login/Register Fenster -->
+    <div id="login-overlay">
+        <div id="login-window">
+
+            <!-- Login Formular -->
+            <div id="login-form" class="form-container active">
+                <h2>Anmelden</h2>
+                <form onsubmit="event.preventDefault(); handleLogin();">
+                    <div class="input-group">
+                        <input type="email" id="login-email" class="input-field" required>
+                        <label for="login-email" class="input-label">E-Mail</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" class="input-field" required>
+                        <label for="login-password" class="input-label">Passwort</label>
+                    </div>
+                    <button type="submit" class="btn">Anmelden</button>
+                </form>
+                <div id="google-signin-button"></div>
+                <div class="toggle-form">
+                    Noch kein Konto? <a onclick="toggleForms()">Jetzt registrieren</a>
+                </div>
+            </div>
+
+            <!-- Register Formular -->
+            <div id="register-form" class="form-container">
+                <h2>Registrieren</h2>
+                <form onsubmit="event.preventDefault(); handleRegister();">
+                     <div class="input-group">
+                        <input type="text" id="register-name" class="input-field" required>
+                        <label for="register-name" class="input-label">Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="register-email" class="input-field" required>
+                        <label for="register-email" class="input-label">E-Mail</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-password" class="input-field" required>
+                        <label for="register-password" class="input-label">Passwort</label>
+                    </div>
+                    <button type="submit" class="btn">Registrieren</button>
+                </form>
+                <div class="toggle-form">
+                    Bereits ein Konto? <a onclick="toggleForms()">Hier anmelden</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Hauptinhalt (nach Login sichtbar) -->
+    <main id="main-content">
+        <h1>Eine Reise in die Tiefen der Psychologie</h1>
+
+        <section class="psychology-section">
+            <h2>Was ist Psychologie?</h2>
+            <p>
+                Psychologie ist die wissenschaftliche Untersuchung des menschlichen Geistes und Verhaltens. Sie ist eine facettenreiche Disziplin, die praktisch jeden Aspekt unseres Lebens berührt – von den biologischen Prozessen in unserem Gehirn bis hin zu den komplexen sozialen Interaktionen in Kulturen. Das Ziel der Psychologie ist es, zu beschreiben, zu erklären, vorherzusagen und letztendlich das Verhalten und die mentalen Prozesse zu beeinflussen, um das individuelle und gesellschaftliche Wohlbefinden zu verbessern. Sie erforscht, warum wir fühlen, was wir fühlen, warum wir denken, was wir denken, und warum wir handeln, wie wir handeln. Von der Entwicklung eines Kindes bis zu den Herausforderungen des Alters, von der Art, wie wir lernen und uns erinnern, bis zu den Wurzeln psychischer Erkrankungen – die Psychologie bietet uns die Werkzeuge, um das menschliche Rätsel Stück für Stück zu entschlüsseln.
+            </p>
+        </section>
+
+        <section class="psychology-section">
+            <h2>Die großen Perspektiven der Psychologie</h2>
+            <p>
+                Im Laufe ihrer Geschichte haben sich verschiedene Denkschulen oder Perspektiven entwickelt, um das menschliche Verhalten zu erklären. Jede dieser Perspektiven bietet einen einzigartigen Blickwinkel:
+            </p>
+            <ul>
+                <li><strong>Die psychodynamische Perspektive:</strong> Gegründet von Sigmund Freud, betont diese Sichtweise den Einfluss des Unbewussten, frühkindlicher Erfahrungen und innerer Konflikte auf das Verhalten. Konzepte wie das Es, Ich und Über-Ich sind hier zentral.</li>
+                <li><strong>Die behavioristische Perspektive:</strong> Behavioristen wie John B. Watson und B.F. Skinner konzentrieren sich ausschließlich auf beobachtbares Verhalten. Sie argumentieren, dass Verhalten durch Umweltreize und Lernerfahrungen (Konditionierung) geformt wird, nicht durch innere mentale Zustände.</li>
+                <li><strong>Die humanistische Perspektive:</strong> Als Reaktion auf die deterministischen Ansichten von Psychoanalyse und Behaviorismus betonten Humanisten wie Carl Rogers und Abraham Maslow das Potenzial für persönliches Wachstum, freien Willen und Selbstverwirklichung. Die Bedürfnispyramide ist ein berühmtes Konzept dieser Schule.</li>
+                <li><strong>Die kognitive Perspektive:</strong> Diese Perspektive, die in den 1960er Jahren an Bedeutung gewann, rückt mentale Prozesse wie Denken, Wahrnehmen, Gedächtnis und Problemlösen in den Vordergrund. Sie vergleicht den menschlichen Geist oft mit einem Computer, der Informationen verarbeitet.</li>
+                <li><strong>Die biologische Perspektive:</strong> Hier wird Verhalten auf biologische Faktoren zurückgeführt. Forscher untersuchen, wie Gene, Hormone, das Nervensystem und die Gehirnstruktur Denken, Fühlen und Handeln beeinflussen.</li>
+                <li><strong>Die soziokulturelle Perspektive:</strong> Diese Sichtweise untersucht, wie soziales Umfeld und Kultur das Verhalten und Denken des Einzelnen beeinflussen. Sie zeigt auf, wie Normen, soziale Rollen und kulturelle Werte unsere Wahrnehmung der Welt prägen.</li>
+            </ul>
+        </section>
+
+        <section class="psychology-section">
+            <h2>Schlüsselbereiche der angewandten Psychologie</h2>
+            <p>
+                Die Psychologie ist nicht nur theoretisch; sie hat zahlreiche praktische Anwendungen, die das Leben von Menschen direkt verbessern:
+            </p>
+            <p>
+                <strong>Klinische Psychologie:</strong> Dies ist der größte Bereich der Psychologie. Klinische Psychologen diagnostizieren und behandeln psychische, emotionale und Verhaltensstörungen, von leichten Lebenskrisen bis hin zu schweren Erkrankungen wie Schizophrenie. Sie nutzen verschiedene Therapieformen, um Menschen zu helfen, ihre Probleme zu bewältigen und ein gesünderes Leben zu führen.
+            </p>
+            <p>
+                <strong>Entwicklungspsychologie:</strong> Sie erforscht die psychologischen Veränderungen, die ein Mensch im Laufe seines Lebens durchmacht – von der Geburt bis ins hohe Alter. Sie untersucht die Entwicklung von Sprache, kognitiven Fähigkeiten, sozialem Verhalten und Identität.
+            </p>
+            <p>
+                <strong>Sozialpsychologie:</strong> Sie befasst sich damit, wie die Gedanken, Gefühle und Verhaltensweisen von Individuen durch die tatsächliche, vorgestellte oder implizite Anwesenheit anderer beeinflusst werden. Themen wie Konformität, Vorurteile, Anziehung und Gruppenverhalten sind hier zentral.
+            </p>
+             <p>
+                <strong>Arbeits- und Organisationspsychologie:</strong> A&O-Psychologen wenden psychologische Prinzipien am Arbeitsplatz an. Sie beschäftigen sich mit Themen wie Mitarbeitermotivation, Führung, Produktivität, Personal-auswahl und der Gestaltung eines gesunden Arbeitsumfelds.
+            </p>
+        </section>
+        
+        <section class="psychology-section">
+            <h2>Die Bedeutung der Psychologie im Alltag</h2>
+            <p>
+                Psychologisches Wissen ist nicht nur für Therapeuten und Forscher relevant. Es hilft uns allen, uns selbst und andere besser zu verstehen. Es kann unsere Kommunikationsfähigkeiten verbessern, uns helfen, Stress effektiver zu bewältigen, unsere Lernstrategien optimieren und unsere Beziehungen zu stärken. Indem wir die Prinzipien der Motivation verstehen, können wir unsere Ziele effektiver verfolgen. Indem wir die Mechanismen von Vorurteilen erkennen, können wir bewusster und fairer handeln. Die Psychologie ist letztlich ein Werkzeug zur Selbstreflexion und zur Verbesserung der menschlichen Erfahrung auf allen Ebenen.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        // --- Sternenhimmel-Animation ---
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let stars = [];
+        const numStars = 500;
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                vx: Math.floor(Math.random() * 50) - 25,
+                vy: Math.floor(Math.random() * 50) - 25
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = "lighter";
+            
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i];
+                ctx.fillStyle = "#fff";
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+
+        function update() {
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i];
+                s.x += s.vx / 60;
+                s.y += s.vy / 60;
+
+                if (s.x < 0 || s.x > canvas.width) s.vx = -s.vx;
+                if (s.y < 0 || s.y > canvas.height) s.vy = -s.vy;
+            }
+        }
+
+        function tick() {
+            draw();
+            update();
+            requestAnimationFrame(tick);
+        }
+        tick();
+
+        // --- Login/Register Funktionalität ---
+        const loginOverlay = document.getElementById('login-overlay');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        function toggleForms() {
+            loginForm.classList.toggle('active');
+            registerForm.classList.toggle('active');
+        }
+
+        function handleSuccessfulLogin(userData) {
+            console.log("Anmeldung erfolgreich:", userData);
+            loginOverlay.classList.add('hidden');
+        }
+
+        // Simuliert einen normalen Login
+        function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            // In einer echten Anwendung würde hier die serverseitige Verifizierung stattfinden
+            if (email) {
+                 handleSuccessfulLogin({ email: email });
+            }
+        }
+
+        // Simuliert eine normale Registrierung
+        function handleRegister() {
+            const email = document.getElementById('register-email').value;
+            // In einer echten Anwendung würde die serverseitige Registrierung stattfinden
+            if (email) {
+                alert('Registrierung erfolgreich! Bitte melden Sie sich an.');
+                toggleForms();
+            }
+        }
+        
+        // --- Google Sign-In Funktionalität ---
+        window.onload = function () {
+            google.accounts.id.initialize({
+                // Das Script liest die Client ID aus dem obigen Meta-Tag
+                client_id: document.querySelector('meta[name="google-signin-client_id"]').content,
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("google-signin-button"),
+                { theme: "outline", size: "large", type: "standard", shape: "rectangular", text: "signin_with" }
+            );
+        };
+
+        function handleCredentialResponse(response) {
+            // Die Antwort enthält das JWT (JSON Web Token)
+            console.log("Encoded JWT ID token: " + response.credential);
+            // WICHTIG: In einer echten Anwendung MUSS dieses Token an Ihr Backend 
+            // gesendet und dort sicher verifiziert werden, bevor Sie dem Nutzer Zugriff gewähren.
+            
+            // Für diese Demo simulieren wir einen erfolgreichen Login direkt im Frontend.
+            const decodedToken = JSON.parse(atob(response.credential.split('.')[1]));
+            handleSuccessfulLogin({
+                name: decodedToken.name,
+                email: decodedToken.email,
+                picture: decodedToken.picture
+            });
+        }
+
+    </script>
+</body>
+</html>
