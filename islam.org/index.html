@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- SICHERHEIT: Eine strenge Content Security Policy, die nur Inhalte von der eigenen Quelle erlaubt. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';">
+<!-- SICHERHEIT: Deaktiviert unnötige und potenziell unsichere Browser-Funktionen. -->
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+<title>Die umfassenden Grundlagen des Islam</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0b2f5b; /* Dunklerer, statischer Hintergrund */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    position: relative;
+    color: #f0f0f0;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #0d47a1, #1565c0, #42a5f5, #1e88e5);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    z-index: -1;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .particle {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    animation: float 12s infinite linear;
+    z-index: -1;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+  }
+
+  #pageContainer {
+    max-width: 1000px;
+    width: 90%;
+    padding: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: block;
+    opacity: 1;
+  }
+
+  h1, h2, h3 {
+    font-weight: 300;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+    color: #fff;
+  }
+
+  h1 { font-size: 3em; margin-bottom: 30px; text-align: center; }
+  h2 { font-size: 2.2em; margin-top: 50px; margin-bottom: 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 15px; }
+  h3 { font-size: 1.6em; margin-top: 30px; margin-bottom: 15px; color: #cdeaff; }
+
+  .content-section {
+    margin-bottom: 40px;
+    padding: 35px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+  }
+  
+  .warning-section {
+    background: rgba(255, 152, 0, 0.15);
+    border-left: 5px solid #ff9800;
+  }
+
+  p {
+    line-height: 1.8;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  li {
+    padding: 15px 0;
+    padding-left: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    font-size: 1.1em;
+  }
+  
+  li:last-child {
+    border-bottom: none;
+  }
+
+  li::before {
+    content: '◈'; /* Elegantes Symbol */
+    position: absolute;
+    left: 0;
+    color: #cdeaff;
+    transition: all 0.3s ease;
+  }
+  
+  .quote {
+    font-style: italic;
+    padding: 20px;
+    border-left: 4px solid #cdeaff;
+    margin: 25px 0;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(0,0,0,0.15);
+    border-radius: 0 8px 8px 0;
+  }
+  .quote footer {
+      display: block;
+      text-align: right;
+      margin-top: 10px;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 0.9em;
+  }
+
+  @media (max-width: 768px) {
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.8em; }
+    #pageContainer { padding: 15px; width: 95%; }
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div id="pageContainer">
+  
+  <h1>Die Reise des Glaubens im Islam</h1>
+  
+  <div class="content-section">
+    <h2>Einführung: Der Sinn unserer Existenz</h2>
+    <p>Die grundlegendste Frage der Menschheit wird im Islam klar beantwortet: Der Sinn und Zweck unserer Existenz ist es, Allah allein zu erkennen, Ihn aufrichtig anzubeten und ein Leben in rechtschaffener Unterwerfung unter Seinen Willen zu führen, um Sein Wohlgefallen und das Paradies zu erlangen.</p>
+    <div class="quote">
+        <p>"Und Ich habe die Dschinn und die Menschen nur dazu erschaffen, damit sie Mir dienen (sollen)."</p>
+        <footer>- Koran, 51:56</footer>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>Teil 1: Das Fundament – Die Glaubenslehre (Aqidah)</h2>
+    
+    <h3>Tauhid: Die absolute Einheit Gottes</h3>
+    <p>Der Tauhid ist das Herzstück und die zentrale Botschaft aller Propheten. Es ist der unerschütterliche Glaube an die absolute Einheit und Einzigartigkeit Allahs. Nichts ist Ihm gleich.</p>
+    <ul>
+        <li><strong>Tauhid ar-Rububiyyah (Einheit der Herrschaft):</strong> Allah ist der alleinige Schöpfer, Erhalter, Gesetzgeber und Herrscher des gesamten Universums.</li>
+        <li><strong>Tauhid al-Uluhiyyah (Einheit der Anbetung):</strong> Da Allah der alleinige Herr ist, gebührt Ihm allein jegliche Form der Anbetung (Gebet, Bittgebet, Opfergabe, Furcht, Hoffnung, Vertrauen).</li>
+        <li><strong>Tauhid al-Asma wa-s-Sifat (Einheit der Namen & Eigenschaften):</strong> Wir bestätigen Allahs vollkommene Namen und Eigenschaften, wie Er sie offenbart hat, ohne sie zu verzerren, zu leugnen oder mit der Schöpfung zu vergleichen.</li>
+    </ul>
+
+    <h3>Die größte Sünde: Schirk (Beigesellung)</h3>
+    <p>Schirk ist das Gegenteil von Tauhid und die einzige Sünde, die Allah nicht vergibt, wenn man ohne aufrichtige Reue darüber stirbt. Er bedeutet, Allah Partner in Seiner Herrschaft oder Seiner Anbetung beizugesellen.</p>
+    <ul>
+        <li><strong>Großer Schirk:</strong> Führt zum Austritt aus dem Islam, z.B. das Anbeten von Götzen, Heiligen oder Engeln.</li>
+        <li><strong>Kleiner Schirk:</strong> Führt nicht zum Austritt, ist aber eine gewaltige Sünde, z.B. das Schwören bei jemand anderem als Allah oder Taten aus Augendienerei (Riya') zu verrichten.</li>
+    </ul>
+    
+    <h3>Die Sechs Säulen des Iman (Innere Überzeugung)</h3>
+    <p>Diese sechs Überzeugungen sind das Fundament im Herzen eines Muslims.</p>
+    <ul>
+      <li>Glaube an Allah</li>
+      <li>Glaube an Seine Engel (wie Dschibril, Mika'il, Israfil)</li>
+      <li>Glaube an Seine Bücher (die Thora, das Evangelium, die Psalmen und als letzte, bewahrte Offenbarung: der Koran)</li>
+      <li>Glaube an Seine Gesandten (von Adam bis zum letzten Propheten, Muhammad ﷺ)</li>
+      <li>Glaube an den Jüngsten Tag (Auferstehung, Gericht, Paradies und Hölle)</li>
+      <li>Glaube an die Vorherbestimmung (Al-Qadar), das Gute und das Schlechte davon</li>
+    </ul>
+  </div>
+
+  <div class="content-section">
+      <h2>Teil 2: Die Praxis – Säulen und Quellen</h2>
+      <h3>Die Fünf Säulen des Islam</h3>
+      <p>Diese fünf Handlungen bilden das sichtbare und verpflichtende Gerüst der Religion.</p>
+      <ul>
+        <li><strong>Schahada (Glaubensbekenntnis):</strong> Der Schlüssel zum Islam, der mit sieben Bedingungen (Wissen, Gewissheit, Annahme, Unterwerfung, Wahrhaftigkeit, Aufrichtigkeit, Liebe) erfüllt sein muss.</li>
+        <li><strong>Salat (Das Gebet):</strong> Die tägliche, direkte Verbindung zu Allah, die fünfmal am Tag (Fajr, Dhuhr, Asr, Maghrib, Isha) verrichtet wird. Es ist die erste Tat, nach der am Jüngsten Tag gefragt wird.</li>
+        <li><strong>Zakat (Die Pflichtabgabe):</strong> Eine jährliche Abgabe von 2,5% auf bestimmte Vermögenswerte, um die Armen zu unterstützen und das eigene Vermögen zu reinigen.</li>
+        <li><strong>Saum (Das Fasten):</strong> Das Fasten im Monat Ramadan von der Morgendämmerung bis zum Sonnenuntergang, um Taqwa, Geduld und Empathie zu kultivieren.</li>
+        <li><strong>Haddsch (Die Pilgerfahrt):</strong> Die Reise nach Mekka einmal im Leben für jeden, der dazu in der Lage ist, ein Symbol der Einheit und der Rückkehr zu Allah.</li>
+      </ul>
+
+      <h3>Die Quellen der Rechtleitung</h3>
+      <p>Die Rechtleitung im Islam stützt sich auf zwei untrennbare Quellen:</p>
+      <ul>
+          <li><strong>Der Koran:</strong> Das reine, unverfälschte Wort Allahs. Er ist die primäre Quelle für Glauben und Praxis.</li>
+          <li><strong>Die Sunnah:</strong> Die Lehren, Handlungen und stillschweigenden Billigungen des Propheten Muhammad (ﷺ), überliefert in authentischen Hadithen. Sie ist die praktische Erklärung und Umsetzung des Korans. Ohne die Sunnah kann der Islam nicht korrekt verstanden oder praktiziert werden.</li>
+      </ul>
+  </div>
+  
+  <div class="content-section">
+      <h2>Teil 3: Die innere Dimension – Spiritualität (Tazkiyah)</h2>
+      
+      <h3>Das Streben nach Vollkommenheit: Islam, Iman, Ihsan</h3>
+      <p>Der Glaube hat drei Stufen: <strong>Islam</strong> (die äußeren Taten), <strong>Iman</strong> (die innere Überzeugung) und <strong>Ihsan</strong> (die Perfektion der Anbetung). Ihsan ist das Ziel: "Allah so anzubeten, als ob du Ihn siehst, denn obwohl du Ihn nicht siehst, so sieht Er dich doch."</p>
+
+      <h3>Essenzielle Zustände des Herzens</h3>
+      <ul>
+        <li><strong>Ikhlas (Aufrichtigkeit):</strong> Die Bedingung für die Annahme jeder Tat. Alle Anbetung muss einzig und allein für das Wohlgefallen Allahs verrichtet werden, frei von Augendienerei oder weltlichen Motiven.</li>
+        <li><strong>Taqwa (Gottesbewusstsein):</strong> Der Zustand, sich der Allgegenwart Allahs bewusst zu sein. Es ist ein Schutzschild, das einen Muslim dazu bewegt, das Gebotene zu tun und das Verbotene zu meiden.</li>
+        <li><strong>Tawakkul (Gottvertrauen):</strong> Das vollkommene Vertrauen in Allahs Plan und Seine Weisheit, nachdem man selbst alle notwendigen Anstrengungen (die "Mittel") unternommen hat.</li>
+        <li><strong>Sabr (Geduld):</strong> Geduld bei der Ausführung von Geboten, beim Meiden von Sünden und bei schmerzhaften Schicksalsschlägen. Sie ist ein Licht und eine gewaltige Tugend.</li>
+        <li><strong>Shukr (Dankbarkeit):</strong> Dankbarkeit für Allahs unzählige Segnungen. Wer dankbar ist, dem vermehrt Allah Seinen Segen.</li>
+        <li><strong>Tawbah (Reue):</strong> Die ständige Rückkehr zu Allah nach jeder Sünde. Die Tür zur Vergebung steht immer offen für denjenigen, der aufrichtig bereut.</li>
+      </ul>
+  </div>
+  
+  <div class="content-section">
+      <h2>Teil 4: Der Mensch in der Gesellschaft – Ethik (Akhlaq)</h2>
+      
+      <h3>Die Bedeutung von gutem Charakter</h3>
+      <p>Ein exzellenter Charakter ist die Frucht eines wahren Glaubens. Der Prophet (ﷺ) sagte: "Die besten unter euch sind diejenigen mit dem besten Charakter." Ehrlichkeit, Barmherzigkeit, Gerechtigkeit, Bescheidenheit und das Einhalten von Versprechen sind keine optionalen Extras, sondern Kernbestandteile des Islam.</p>
+
+      <h3>Die Ummah: Die globale Gemeinschaft</h3>
+      <p>Alle Muslime sind Teil einer einzigen globalen Gemeinschaft, der Ummah. Dies verpflichtet sie zu Brüderlichkeit, gegenseitiger Unterstützung und dem Wohlwollen füreinander, unabhängig von Herkunft, Sprache oder sozialem Status.</p>
+  </div>
+  
+  <div class="content-section warning-section">
+      <h3 style="color: #ff9800;">Eine wichtige Warnung: Der Missbrauch von Takfir</h3>
+      <p><strong>Takfir</strong> (die Exkommunikation eines Muslims) ist ein extrem gefährlicher Akt mit schwerwiegenden Konsequenzen. Er unterliegt in der islamischen Theologie strengsten Regeln und darf nur von qualifizierten Gelehrten nach sorgfältigster Prüfung und unter Ausschluss aller Zweifel angewendet werden. Die leichtfertige Anwendung von Takfir ist eine große Sünde und ein Merkmal extremistischer Gruppen.</p>
+  </div>
+</div>
+
+<script>
+// SICHERHEIT: Dieses Skript dient ausschließlich der visuellen Gestaltung und ist vollkommen sicher.
+// Es sammelt oder sendet keinerlei Daten.
+document.addEventListener('DOMContentLoaded', () => {
+  function createParticles() {
+    const particleContainer = document.body;
+    // Reduzierte Partikelanzahl für bessere Performance auf schwächeren Geräten
+    const particleCount = window.innerWidth > 768 ? 40 : 20; 
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 12}s`;
+      particle.style.animationDuration = `${Math.random() * 8 + 5}s`;
+      particleContainer.appendChild(particle);
+    }
+  }
+  createParticles();
+});
+</script>
+
+</body>
+</html>
