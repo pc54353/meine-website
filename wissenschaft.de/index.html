@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Wissenschaftsportal</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Google Identity Services Client Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        /* Grundlegende Stile und Resets */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Animierter Hintergrund */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #ff00de, #00ddff, #ffdd00, #ff0033);
+            background-size: 400% 400%;
+            animation: colorAnimation 15s ease infinite;
+        }
+
+        @keyframes colorAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Generischer Container-Stil */
+        .glass-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        /* Login-spezifischer Container */
+        #login-box {
+            padding: 40px 50px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Text-Animationen für Login */
+        #login-box h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+            animation: fadeIn 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        #login-box p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            font-weight: 300;
+            animation: fadeIn 1s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        #google-button-container {
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        /* Versteck-Klasse */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Container für den Inhalt nach dem Login */
+        #content-dashboard {
+            width: 80%;
+            max-width: 1000px;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+        
+        /* Kopfzeile mit Benutzer-Infos */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid white;
+            margin-right: 15px;
+        }
+        
+        .user-profile h2 {
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        #logout-button {
+            background-color: #ff3b30;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        
+        #logout-button:hover {
+            background-color: #c70000;
+        }
+        
+        /* Scrollbarer Bereich für den Wissenschafts-Text */
+        .content-scroll-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            text-align: left;
+            padding-right: 20px; /* Platz für Scrollbar */
+        }
+        
+        /* Styling für den Wissenschafts-Inhalt */
+        .content-scroll-area h1 { font-size: 2.2em; margin-bottom: 20px; }
+        .content-scroll-area h2 { font-size: 1.8em; margin-top: 30px; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 5px; }
+        .content-scroll-area h3 { font-size: 1.4em; margin-top: 25px; }
+        .content-scroll-area p, .content-scroll-area li { font-size: 1em; line-height: 1.6; }
+        .content-scroll-area ul, .content-scroll-area ol { padding-left: 25px; }
+        .content-scroll-area hr { border: none; height: 1px; background-color: rgba(255,255,255,0.3); margin: 40px 0; }
+
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <!-- 1. Login-Fenster (initial sichtbar) -->
+    <div id="login-box" class="glass-container">
+        <h1>Willkommen zurück!</h1>
+        <p>Melde dich schnell und sicher mit deinem Google-Konto an.</p>
+        
+        <div id="google-button-container">
+             <div id="g_id_onload"
+                 data-client_id="186192505823-6pj104tq5squ3lp8t46p5mg5p1evp3ms.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
+        </div>
+    </div>
+    
+    <!-- 2. Dashboard mit Inhalt (nach Login sichtbar) -->
+    <div id="content-dashboard" class="glass-container hidden">
+        <header class="header">
+            <div class="user-profile">
+                <img id="user-pic" src="" alt="Profilbild">
+                <h2 id="user-name"></h2>
+            </div>
+            <button id="logout-button">Abmelden</button>
+        </header>
+
+        <div class="content-scroll-area">
+            <!-- HIER BEGINNT DER EINGEFÜGTE INHALT -->
+            <h1>Allgemeine Wissenschaft: Eine umfassende Darstellung</h1>
+            <hr>
+            
+            <h2>Inhaltsverzeichnis</h2>
+            <ol>
+                <li>Einführung in die Wissenschaft</li>
+                <li>Geschichte der Wissenschaft</li>
+                <li>Die wissenschaftliche Methode</li>
+                <li>Disziplinen der Wissenschaft
+                    <ul>
+                        <li>Naturwissenschaften</li>
+                        <li>Sozialwissenschaften</li>
+                        <li>Geisteswissenschaften</li>
+                        <li>Interdisziplinäre Wissenschaften</li>
+                    </ul>
+                </li>
+                <li>Prinzipien und Werte der Wissenschaft</li>
+                <li>Wissenschaft und Gesellschaft</li>
+                <li>Herausforderungen und Zukunft der Wissenschaft</li>
+                <li>Wissenschaftlicher Fortschritt und Innovationen</li>
+                <li>Wissenschaftliche Infrastruktur und Organisation</li>
+                <li>Wissenschaft im 21. Jahrhundert: Chancen und Risiken</li>
+                <li>Fazit und Ausblick</li>
+            </ol>
+            
+            <hr>
+
+            <h2>1. Einführung in die Wissenschaft</h2>
+            <p>Wissenschaft ist eine fundamentale menschliche Tätigkeit, die darauf abzielt, das Verständnis der Welt um uns herum systematisch und methodisch zu erweitern. Sie basiert auf der Suche nach objektivem Wissen, das durch Beobachtung, Experiment und Analyse gewonnen wird.</p>
+            
+            <h3>Was ist Wissenschaft?</h3>
+            <p>Im Kern ist Wissenschaft ein strukturierter Prozess, der es ermöglicht, Hypothesen aufzustellen, zu testen und daraus Theorien zu entwickeln, die unsere Sicht auf die Natur, Gesellschaft und das Universum verbessern. Wissenschaftliche Erkenntnisse sind durch ihre Überprüfbarkeit und Reproduzierbarkeit gekennzeichnet.</p>
+            
+            <h3>Warum ist Wissenschaft wichtig?</h3>
+            <p>Wissenschaft hat das Leben der Menschen grundlegend verändert. Sie hat Technologien hervorgebracht, die Medizin, Kommunikation, Transport und Energieversorgung revolutioniert haben. Gleichzeitig trägt Wissenschaft zur Lösung globaler Herausforderungen wie Klimawandel, Krankheiten oder Ressourcenknappheit bei.</p>
+            
+            <h3>Die Merkmale der Wissenschaft</h3>
+            <ul>
+                <li><strong>Systematik:</strong> Wissenschaft folgt klaren, methodischen Vorgehensweisen.</li>
+                <li><strong>Objektivität:</strong> Bemüht sich um unverzerrte Erkenntnisse.</li>
+                <li><strong>Kritische Überprüfung:</strong> Ergebnisse werden ständig hinterfragt und überprüft.</li>
+                <li><strong>Offenheit:</strong> Forschungsergebnisse werden veröffentlicht, um Replikation und Überprüfung zu ermöglichen.</li>
+                <li><strong>Falsifizierbarkeit:</strong> Theorien müssen widerlegbar sein, um wissenschaftlich zu sein.</li>
+            </ul>
+            <!-- HIER ENDET DER EINGEFÜGTE INHALT -->
+        </div>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
+
+            // UI aktualisieren
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('content-dashboard').classList.remove('hidden');
+
+            // Benutzerinformationen im Dashboard anzeigen
+            document.getElementById('user-pic').src = responsePayload.picture;
+            document.getElementById('user-name').innerText = `Willkommen, ${responsePayload.given_name}!`;
+        }
+
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+        
+        document.getElementById('logout-button').addEventListener('click', () => {
+            // Deaktiviert die automatische Anmeldung für den nächsten Besuch. [1]
+            google.accounts.id.disableAutoSelect();
+            
+            // UI zurücksetzen
+            document.getElementById('login-box').classList.remove('hidden');
+            document.getElementById('content-dashboard').classList.add('hidden');
+        });
+    </script>
+
+</body>
+</html>
