@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch-Arabisch Übersetzer | 120Hz</title>
+    <style>
+        /* Basic styles for the body */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0221; /* Dark blue-purple background */
+            color: #f0f0f0; /* Light text color */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Prevent scrolling of the page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Animated background canvas */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place background behind content */
+            top: 0;
+            left: 0;
+        }
+
+        /* Main container for the translator app */
+        .translator-container {
+            background: rgba(10, 25, 47, 0.85); /* Semi-transparent dark background */
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            z-index: 1;
+            animation: fadeIn 1.5s ease-out; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Title style */
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #64ffda; /* Mint green color for title */
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.7);
+        }
+
+        /* Textarea for input */
+        .input-textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #64ffda;
+            background-color: rgba(20, 40, 65, 0.9);
+            color: #f0f0f0;
+            font-size: 1.1em;
+            resize: none; /* Disable resizing */
+            box-sizing: border-box; /* Proper box model */
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .input-textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.5);
+        }
+
+        /* Translate button style */
+        .translate-button {
+            padding: 15px 30px;
+            border: none;
+            background-color: #64ffda;
+            color: #0d0221;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .translate-button:hover {
+            background-color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* Result display area */
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(20, 40, 65, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            min-height: 80px;
+            text-align: right; /* Right-align for Arabic */
+            font-size: 1.8em; /* Larger font for Arabic */
+            font-family: 'Amiri', serif; /* Elegant font for Arabic */
+            direction: rtl; /* Right-to-left text direction */
+            color: #f0f0f0;
+        }
+
+        /* Google Fonts import for Arabic font */
+        @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+    </style>
+</head>
+<body>
+
+    <!-- The animated particle background will be rendered here -->
+    <div id="particles-js"></div>
+
+    <!-- Translator App Interface -->
+    <div class="translator-container">
+        <h1>Deutsch zu Arabisch</h1>
+        <textarea id="inputText" class="input-textarea" placeholder="Geben Sie hier deutschen Text ein..."></textarea>
+        <button id="translateBtn" class="translate-button">Übersetzen</button>
+        <div id="resultText" class="result-container"></div>
+    </div>
+
+    <!-- JavaScript for Particles Animation (120Hz friendly) and Translation Logic -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // --- 1. 120Hz Animated Background ---
+        // This library is efficient and uses requestAnimationFrame for smooth animations
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#64ffda"
+                },
+                "shape": {
+                    "type": "circle",
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.1,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.3
+                        }
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                }
+            },
+            "retina_detect": true
+        });
+
+        // --- 2. Translation Logic ---
+        document.getElementById('translateBtn').addEventListener('click', () => {
+            const inputText = document.getElementById('inputText').value;
+            const resultContainer = document.getElementById('resultText');
+
+            if (inputText.trim() === '') {
+                resultContainer.innerText = 'Bitte geben Sie Text ein.';
+                return;
+            }
+
+            resultContainer.innerText = 'Übersetze...';
+
+            // Free translation API call
+            const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=de|ar`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.responseData && data.responseData.translatedText) {
+                        resultContainer.innerText = data.responseData.translatedText;
+                    } else {
+                        resultContainer.innerText = 'Übersetzung fehlgeschlagen.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultContainer.innerText = 'Ein Fehler ist aufgetreten.';
+                });
+        });
+    </script>
+</body>
+</html>
